@@ -49,7 +49,7 @@ SDK_URL=http://developer.nordicsemi.com/nRF52_SDK/nRF52_SDK_v0.x.x/
 #SDK_URL=http://developer.nordicsemi.com/nRF51_SDK/nRF51_SDK_v7.x.x
 
 
-SDK_INSTALL_DIR=../../nordic
+SDK_INSTALL_DIR=download
 USE_SOFT_DEVICE=no
 
 
