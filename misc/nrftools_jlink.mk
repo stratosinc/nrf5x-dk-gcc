@@ -17,7 +17,7 @@ JLINKEXE_PATH ?= $(shell which $(JLINKEXE))
 
 erase-all:
 ifeq ($(PROGRAMMER),nrftool)
-	$(PROGRAMMER) --device=$(DEVICE) --jlinkexe $(JLINKEXE_PATH) erase
+	$(PROGRAMMER) --verbose --device=$(DEVICE) --jlinkexe $(JLINKEXE_PATH) erase
 endif
 ifeq ($(PROGRAMMER),nrfjprog)
 	$(PROGRAMMER) --family $(DEVICE) --eraseall
@@ -25,7 +25,7 @@ endif
 
 program:
 ifeq ($(PROGRAMMER),nrftool)
-	$(PROGRAMMER) --device=$(DEVICE) --jlinkexe $(JLINKEXE_PATH) flash $(PROJECT_NAME).bin $(FLASH_START_ADDRESS)
+	$(PROGRAMMER) --verbose --device=$(DEVICE) --jlinkexe $(JLINKEXE_PATH) flash $(PROJECT_NAME).bin $(FLASH_START_ADDRESS)
 endif
 ifeq ($(PROGRAMMER),nrfjprog)
 	$(PROGRAMMER) --family $(DEVICE) --program $(PROJECT_NAME).hex
