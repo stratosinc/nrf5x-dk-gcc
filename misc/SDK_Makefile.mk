@@ -144,8 +144,6 @@ endif
 
 ifeq ($(SDK_DRIVERS_NRF_PSTORAGE),yes)
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/pstorage/pstorage.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/pstorage/pstorage_raw.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/pstorage/pstorage_nosd.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/pstorage
 endif
 
@@ -442,7 +440,6 @@ endif
 
 ifeq ($(SDK_BLE_DEVICE_MANAGER),yes)
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/device_manager/device_manager_peripheral.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/device_manager/device_manager_central.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/device_manager
 endif
 
