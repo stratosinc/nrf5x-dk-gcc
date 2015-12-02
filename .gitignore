@@ -1,8 +1,7 @@
-/src/main.d
-/src/main.o
-/test.bin
-/test.elf
-/test.hex
-/main_flymake.d
 /ld.txt
 download
+*.d
+*.o
+*.bin
+*.elf
+*.hex

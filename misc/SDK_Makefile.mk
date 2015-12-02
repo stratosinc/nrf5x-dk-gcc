@@ -82,10 +82,7 @@ endif
 
 ifeq ($(SDK_LIBRARIES_TIMER),yes)
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer_appsh.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer_freertos.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer_ble_gzll.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer_rtx.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer
 endif
 
@@ -388,7 +385,6 @@ endif
 
 ifeq ($(SDK_LIBRARIES_SCHEDULER),yes)
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/scheduler/app_scheduler.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/scheduler/app_scheduler_serconn.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/scheduler
 endif
 

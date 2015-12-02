@@ -12,7 +12,7 @@ Notes :
 
    You can include this project as a git submodule in your own nRF5x project - No need to clone it !
    See https://github.com/rbarzic/nrf52-example-uart.git as an example
-   
+
 ## Requirements
 
 - ARM GCC toolchain (arm-none-eabi-*)
@@ -45,7 +45,7 @@ The makefile can generate tag files and a .dir-locals.el file for company-clang 
 
 Creating the tag file using etags: make create_etags
 
-Creating the tag file using ctags (Exuberant Ctags) : make create_ctags 
+Creating the tag file using ctags (Exuberant Ctags) : make create_ctags
 
 Creating the .dir-locals.el : make create_emacs_dir_locals
 
@@ -57,7 +57,7 @@ On-the fly error checking using Flymake is supported using the check-syntax targ
 ## nRF52 SDK fix
 
 It looks like the linker file for the xxaa device is incorrect :
-the line 
+the line
 
 RAM (rwx) :  ORIGIN = 0x20000000, LENGTH = 0x10000
 
