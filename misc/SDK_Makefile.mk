@@ -199,7 +199,6 @@ endif
 ifeq ($(SDK_LIBRARIES_UART),yes)
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/uart/app_uart_fifo.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/uart/retarget.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/uart/app_uart.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/uart
 endif
 
@@ -343,9 +342,7 @@ INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/bl
 endif
 
 ifeq ($(SDK_DRIVERS_NRF_UART),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/uart/app_uart_fifo.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/uart/nrf_drv_uart.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/uart/app_uart.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/uart
 endif
 
