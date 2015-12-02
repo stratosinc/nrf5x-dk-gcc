@@ -1,3 +1,5 @@
+.DEFAULT_GOAL := all
+
 PROJECT_NAME=test
 
 C_SOURCE_FILES := $(wildcard src/*.c)

@@ -33,7 +33,7 @@ Extract the SDK : make install_sdk
 
 Generated a Makefile containing definitions for the various components in the SDK : make get_library
 
-Compile the project : make all
+Compile the project : make
 
 Erase the flash : make erase-all
 
