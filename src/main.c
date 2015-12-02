@@ -504,7 +504,9 @@ static void buttons_leds_init(bool * p_erase_bonds)
  */
 static void power_manage(void)
 {
-    uint32_t err_code = sd_app_evt_wait();
+    // TODO including this makes the program crash, or at least never wake up
+    /* uint32_t err_code = sd_app_evt_wait(); */
+    uint32_t err_code = 0;
     APP_ERROR_CHECK(err_code);
 }
 
@@ -521,6 +523,7 @@ int main(void)
     APP_TIMER_INIT(APP_TIMER_PRESCALER, APP_TIMER_MAX_TIMERS, APP_TIMER_OP_QUEUE_SIZE, false);
     uart_init();
     buttons_leds_init(&erase_bonds);
+    // TODO if you init the BLE stack we never see the "start" message over UART
     /* ble_stack_init(); */
     /* gap_params_init(); */
     /* services_init(); */
@@ -528,18 +531,14 @@ int main(void)
     /* conn_params_init(); */
 
     printf("%s",start_string);
-    printf("1\n");
 
     /* err_code = ble_advertising_start(BLE_ADV_MODE_FAST); */
     APP_ERROR_CHECK(err_code);
-    printf("2\n");
 
     // Enter main loop.
     for (;;)
     {
-        printf("3\n");
         power_manage();
-        printf("%s",start_string);
     }
 }
 
