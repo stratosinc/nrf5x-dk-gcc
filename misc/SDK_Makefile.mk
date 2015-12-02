@@ -4,14 +4,22 @@ C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/saadc
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/saadc
 endif
 
+ifeq ($(SDK_EXPERIMENTAL_NFC_NFC_LIB),yes)
+INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/experimental_nfc/nfc_lib
+endif
+
 ifeq ($(SDK_DRIVERS_NRF_DELAY),yes)
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/delay/nrf_delay.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/delay
 endif
 
-ifeq ($(SDK_BLE_SERVICES_BLE_DFU),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_dfu/ble_dfu.c
-INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_dfu
+ifeq ($(SDK_EXPERIMENTAL_NFC_HAL_NFC),yes)
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/experimental_nfc/hal_nfc/hal_nfc.c
+endif
+
+ifeq ($(SDK_LIBRARIES_CONSOLE),yes)
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/console/console.c
+INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/console
 endif
 
 ifeq ($(SDK_LIBRARIES_BUTTON),yes)
@@ -24,8 +32,9 @@ C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/spi_s
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/spi_slave
 endif
 
-ifeq ($(SDK_PSTORAGE_CONFIG),yes)
-INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/pstorage/config
+ifeq ($(SDK_BLE_SERVICES_BLE_NUS),yes)
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_nus/ble_nus.c
+INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_nus
 endif
 
 ifeq ($(SDK_DRIVERS_EXT_ADNS2080),yes)
@@ -59,24 +68,24 @@ endif
 
 ifeq ($(SDK_TOOLCHAIN_ARM),yes)
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/toolchain/arm
-SRCS_AS += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/toolchain/arm/arm_startup_nrf52.s
 SRCS_AS += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/toolchain/arm/arm_startup_nrf51.s
+SRCS_AS += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/toolchain/arm/arm_startup_nrf52.s
 endif
 
 ifeq ($(SDK_BLE_COMMON),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/common/ble_conn_params.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/common/ble_advdata.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/common/ble_srv_common.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/common/ble_advdata_parser.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/common/ble_advdata.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/common/ble_conn_params.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/common
 endif
 
 ifeq ($(SDK_LIBRARIES_TIMER),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer_ble_gzll.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer_freertos.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer_rtx.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer_appsh.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer_freertos.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer_ble_gzll.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer/app_timer_rtx.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/timer
 endif
 
@@ -117,11 +126,6 @@ ifeq ($(SDK_SDIO_CONFIG),yes)
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/sdio/config
 endif
 
-ifeq ($(SDK_BLE_SERVICES_BLE_NUS),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_nus/ble_nus.c
-INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_nus
-endif
-
 ifeq ($(SDK_BLE_SERVICES_BLE_BAS_C),yes)
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_bas_c/ble_bas_c.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_bas_c
@@ -143,9 +147,14 @@ endif
 
 ifeq ($(SDK_DRIVERS_NRF_PSTORAGE),yes)
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/pstorage/pstorage.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/pstorage/pstorage_nosd.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/pstorage/pstorage_raw.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/pstorage/pstorage_nosd.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/pstorage
+endif
+
+ifeq ($(SDK_EXPERIMENTAL_NFC_URI),yes)
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/experimental_nfc/uri/nfc_uri_msg.c
+INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/experimental_nfc/uri
 endif
 
 ifeq ($(SDK_LIBRARIES_SIMPLE_TIMER),yes)
@@ -173,6 +182,11 @@ C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/pwm/app
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/pwm
 endif
 
+ifeq ($(SDK_EXPERIMENTAL_NFC_CONNECTION_HANDOVER),yes)
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/experimental_nfc/connection_handover/nfc_ble_pair_msg.c
+INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/experimental_nfc/connection_handover
+endif
+
 ifeq ($(SDK_BLE_BLE_DB_DISCOVERY),yes)
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_db_discovery/ble_db_discovery.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_db_discovery
@@ -188,10 +202,14 @@ INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_ext/ds1624
 endif
 
 ifeq ($(SDK_LIBRARIES_UART),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/uart/retarget.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/uart/app_uart_fifo.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/uart/retarget.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/uart/app_uart.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/uart
+endif
+
+ifeq ($(SDK_PSTORAGE_CONFIG),yes)
+INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/pstorage/config
 endif
 
 ifeq ($(SDK_BLE_BLE_DTM),yes)
@@ -318,20 +336,20 @@ ifeq ($(SDK_BOOTLOADER_DFU_HCI_TRANSPORT),yes)
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/hci_transport
 endif
 
-ifeq ($(SDK_LIBRARIES_CONSOLE),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/console/console.c
-INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/console
+ifeq ($(SDK_BLE_SERVICES_BLE_DFU),yes)
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_dfu/ble_dfu.c
+INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_dfu
 endif
 
 ifeq ($(SDK_BLE_SERVICES_BLE_CSCS),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_cscs/ble_cscs.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_cscs/ble_sc_ctrlpt.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_cscs/ble_cscs.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_cscs
 endif
 
 ifeq ($(SDK_DRIVERS_NRF_UART),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/uart/nrf_drv_uart.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/uart/app_uart_fifo.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/uart/nrf_drv_uart.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/uart/app_uart.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/uart
 endif
@@ -342,9 +360,9 @@ INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/wdt
 endif
 
 ifeq ($(SDK_LIBRARIES_UTIL),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/util/nrf_assert.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/util/app_error.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/util/app_util_platform.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/util/nrf_assert.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/util
 endif
 
@@ -369,8 +387,8 @@ INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/radio_c
 endif
 
 ifeq ($(SDK_LIBRARIES_SCHEDULER),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/scheduler/app_scheduler_serconn.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/scheduler/app_scheduler.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/scheduler/app_scheduler_serconn.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/scheduler
 endif
 
@@ -379,8 +397,8 @@ INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/softdevice/s132/hea
 endif
 
 ifeq ($(SDK_COMPONENTS_TOOLCHAIN),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/toolchain/system_nrf51422.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/toolchain/system_nrf52.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/toolchain/system_nrf51422.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/toolchain/system_nrf51.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/toolchain
 endif
@@ -401,8 +419,8 @@ INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/bl
 endif
 
 ifeq ($(SDK_LIBRARIES_HCI),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/hci/hci_mem_pool.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/hci/hci_slip.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/hci/hci_mem_pool.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/hci/hci_transport.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/hci
 endif
@@ -412,9 +430,12 @@ C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_ias
 endif
 
-ifeq ($(SDK_DRIVERS_NRF_SWI),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/swi/nrf_drv_swi.c
-INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/swi
+ifeq ($(SDK_DRIVERS_NRF_HAL),yes)
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/hal/nrf_saadc.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/hal/nrf_ecb.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/hal/nrf_nvmc.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/hal/nrf_adc.c
+INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/hal
 endif
 
 ifeq ($(SDK_COMMON_SOFTDEVICE_HANDLER),yes)
@@ -424,8 +445,8 @@ INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/softdevice/common/s
 endif
 
 ifeq ($(SDK_BLE_DEVICE_MANAGER),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/device_manager/device_manager_central.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/device_manager/device_manager_peripheral.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/device_manager/device_manager_central.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/device_manager
 endif
 
@@ -454,15 +475,15 @@ INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/ppi
 endif
 
 ifeq ($(SDK_LIBRARIES_BOOTLOADER_DFU),yes)
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/dfu_single_bank.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/dfu_dual_bank.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/dfu_transport_ble.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/dfu_transport_serial.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/dfu_init_template.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/bootloader.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/dfu_single_bank.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/dfu_transport_ble.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/bootloader_util.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/dfu_app_handler.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/bootloader_settings.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu/bootloader.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/bootloader_dfu
 endif
 
@@ -477,8 +498,8 @@ INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ant
 endif
 
 ifeq ($(SDK_LIBRARIES_ANT_FS),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/ant_fs/antfs.c
 C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/ant_fs/crc.c
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/ant_fs/antfs.c
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/libraries/ant_fs
 endif
 
@@ -487,12 +508,9 @@ C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/
 INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/ble/ble_services/ble_lls
 endif
 
-ifeq ($(SDK_DRIVERS_NRF_HAL),yes)
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/hal/nrf_ecb.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/hal/nrf_saadc.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/hal/nrf_adc.c
-C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/hal/nrf_nvmc.c
-INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/hal
+ifeq ($(SDK_DRIVERS_NRF_SWI),yes)
+C_SOURCE_FILES += $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/swi/nrf_drv_swi.c
+INC_PATHS += -I $(SDK_INSTALL_DIR)/$(SDK_VERSION)/components/drivers_nrf/swi
 endif
 
 ifeq ($(SDK_BLE_SERVICES_BLE_GLS),yes)
